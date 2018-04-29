@@ -3,7 +3,7 @@
 set -o errexit
 set -o xtrace
 
-main () {
+main() {
   install_apt_deps
   install_docker
 
@@ -11,7 +11,7 @@ main () {
   create_and_enable_iptables_service
 }
 
-install_apt_deps () {
+install_apt_deps() {
   echo "INFO:
   Installing APT dependencies.
   "
@@ -20,7 +20,7 @@ install_apt_deps () {
   sudo apt install -y iptables
 }
 
-install_docker () {
+install_docker() {
   echo "INFO:
   Installing docker.
   "
@@ -29,7 +29,7 @@ install_docker () {
   sudo sh ./get-docker.sh
 }
 
-configure_iptables_rules () {
+configure_iptables_rules() {
   echo "INFO:
   Configuring IPTABLES rules.
   "
@@ -38,14 +38,13 @@ configure_iptables_rules () {
 :DOCKER-USER - [0:0]
 
 -F DOCKER-USER
--A DOCKER-USER --dest 169.254.169.254 -j DROP
--A DOCKER-USER -j RETURN
+-I DOCKER-USER --dest 169.254.169.254 -j DROP
 
 COMMIT" | sudo tee \
     --append /etc/iptables.conf
 }
 
-create_and_enable_iptables_service () {
+create_and_enable_iptables_service() {
   echo "INFO:
   Configuring IPTABLES service.
   "
