@@ -52,7 +52,7 @@ create_and_enable_iptables_service() {
 
   echo "[Unit]
 Description=Restore iptables firewall rules
-After=network.target mongodb.service
+After=network.target docker.service
 
 [Service]
 Type=oneshot
