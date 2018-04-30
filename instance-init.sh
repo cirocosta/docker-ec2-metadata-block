@@ -6,6 +6,7 @@ set -o xtrace
 main() {
   install_apt_deps
   install_docker
+  install_awsmon
 
   configure_iptables_rules
   create_and_enable_iptables_service
@@ -27,6 +28,10 @@ install_docker() {
 
   curl -fsSL get.docker.com -o get-docker.sh
   sudo sh ./get-docker.sh
+}
+
+install_awsmon () {
+
 }
 
 configure_iptables_rules() {
