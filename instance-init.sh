@@ -30,8 +30,35 @@ install_docker() {
   sudo sh ./get-docker.sh
 }
 
-install_awsmon () {
+install_awsmon() {
+  echo "INFO:
+  Installing awsmon.
+  "
 
+  curl -SL \
+    -o ./awsmon.tgz \
+    https://github.com/cirocosta/awsmon/releases/download/v2.8.1/awsmon_2.8.1_linux_amd64.tar.gz
+  tar xzf ./awsmon.tgz
+  sudo mv ./awsmon /usr/local/bin/awsmon
+
+  echo "INFO:
+  Configuring AWSMON service.
+  "
+
+  echo "[Unit]
+Description=AWSMON
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/awsmon --aws --aws-region=sa-east-1 --aws-instance-id=inst1 --aws-instance-type=t2.micro --aws-asg=asg
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target" | sudo tee \
+    --append /etc/systemd/system/awsmon.service
+  sudo systemctl enable awsmon.service
+  sudo systemctl start awsmon.service
 }
 
 configure_iptables_rules() {
