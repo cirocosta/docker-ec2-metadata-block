@@ -39,6 +39,7 @@ configure_iptables_rules() {
 
 -F DOCKER-USER
 -I DOCKER-USER --dest 169.254.169.254 -j REJECT
+-A DOCKER-USER -j RETURN
 
 COMMIT" | sudo tee \
     --append /etc/iptables.conf
@@ -51,7 +52,7 @@ create_and_enable_iptables_service() {
 
   echo "[Unit]
 Description=Restore iptables firewall rules
-Before=network-pre.target
+After=network.target mongodb.service
 
 [Service]
 Type=oneshot
